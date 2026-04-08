@@ -1,0 +1,135 @@
+[*]
+[*] GTKWave Analyzer v3.3.116 (w)1999-2023 BSI
+[*] Wed Mar 25 10:48:15 2026
+[*]
+[dumpfile] "/home/hye/mpw_2026/peri_mpw/peri_top.vcd"
+[dumpfile_mtime] "Wed Mar 25 10:37:32 2026"
+[dumpfile_size] 3809802
+[savefile] "/home/hye/mpw_2026/peri_mpw/debug_wave.gtkw"
+[timestart] 200037900
+[size] 1819 914
+[pos] 475 230
+*-16.200001 200250000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] tb_post_sim.
+[treeopen] tb_post_sim.peri_top.
+[sst_width] 276
+[signals_width] 222
+[sst_expanded] 1
+[sst_vpaned_height] 253
+@28
+tb_post_sim.peri_top.RSTN
+tb_post_sim.peri_top.CLK
+@22
+tb_post_sim.peri_top.ADDRESS_I[31:0]
+tb_post_sim.peri_top.DATA_I[31:0]
+tb_post_sim.peri_top.DATA_O[31:0]
+@200
+-
+@28
+tb_post_sim.peri_top.MODE_O[1:0]
+@22
+tb_post_sim.peri_top.VPASS_EN_O[127:0]
+tb_post_sim.peri_top.WL_SEL_O[127:0]
+tb_post_sim.peri_top.PRECB_O[31:0]
+@c00022
+tb_post_sim.peri_top.DUMH_O[63:0]
+@28
+(0)tb_post_sim.peri_top.DUMH_O[63:0]
+(1)tb_post_sim.peri_top.DUMH_O[63:0]
+(2)tb_post_sim.peri_top.DUMH_O[63:0]
+(3)tb_post_sim.peri_top.DUMH_O[63:0]
+(4)tb_post_sim.peri_top.DUMH_O[63:0]
+(5)tb_post_sim.peri_top.DUMH_O[63:0]
+(6)tb_post_sim.peri_top.DUMH_O[63:0]
+(7)tb_post_sim.peri_top.DUMH_O[63:0]
+(8)tb_post_sim.peri_top.DUMH_O[63:0]
+(9)tb_post_sim.peri_top.DUMH_O[63:0]
+(10)tb_post_sim.peri_top.DUMH_O[63:0]
+(11)tb_post_sim.peri_top.DUMH_O[63:0]
+(12)tb_post_sim.peri_top.DUMH_O[63:0]
+(13)tb_post_sim.peri_top.DUMH_O[63:0]
+(14)tb_post_sim.peri_top.DUMH_O[63:0]
+(15)tb_post_sim.peri_top.DUMH_O[63:0]
+(16)tb_post_sim.peri_top.DUMH_O[63:0]
+(17)tb_post_sim.peri_top.DUMH_O[63:0]
+(18)tb_post_sim.peri_top.DUMH_O[63:0]
+(19)tb_post_sim.peri_top.DUMH_O[63:0]
+(20)tb_post_sim.peri_top.DUMH_O[63:0]
+(21)tb_post_sim.peri_top.DUMH_O[63:0]
+(22)tb_post_sim.peri_top.DUMH_O[63:0]
+(23)tb_post_sim.peri_top.DUMH_O[63:0]
+(24)tb_post_sim.peri_top.DUMH_O[63:0]
+(25)tb_post_sim.peri_top.DUMH_O[63:0]
+(26)tb_post_sim.peri_top.DUMH_O[63:0]
+(27)tb_post_sim.peri_top.DUMH_O[63:0]
+(28)tb_post_sim.peri_top.DUMH_O[63:0]
+(29)tb_post_sim.peri_top.DUMH_O[63:0]
+(30)tb_post_sim.peri_top.DUMH_O[63:0]
+(31)tb_post_sim.peri_top.DUMH_O[63:0]
+(32)tb_post_sim.peri_top.DUMH_O[63:0]
+(33)tb_post_sim.peri_top.DUMH_O[63:0]
+(34)tb_post_sim.peri_top.DUMH_O[63:0]
+(35)tb_post_sim.peri_top.DUMH_O[63:0]
+(36)tb_post_sim.peri_top.DUMH_O[63:0]
+(37)tb_post_sim.peri_top.DUMH_O[63:0]
+(38)tb_post_sim.peri_top.DUMH_O[63:0]
+(39)tb_post_sim.peri_top.DUMH_O[63:0]
+(40)tb_post_sim.peri_top.DUMH_O[63:0]
+(41)tb_post_sim.peri_top.DUMH_O[63:0]
+(42)tb_post_sim.peri_top.DUMH_O[63:0]
+(43)tb_post_sim.peri_top.DUMH_O[63:0]
+(44)tb_post_sim.peri_top.DUMH_O[63:0]
+(45)tb_post_sim.peri_top.DUMH_O[63:0]
+(46)tb_post_sim.peri_top.DUMH_O[63:0]
+(47)tb_post_sim.peri_top.DUMH_O[63:0]
+(48)tb_post_sim.peri_top.DUMH_O[63:0]
+(49)tb_post_sim.peri_top.DUMH_O[63:0]
+(50)tb_post_sim.peri_top.DUMH_O[63:0]
+(51)tb_post_sim.peri_top.DUMH_O[63:0]
+(52)tb_post_sim.peri_top.DUMH_O[63:0]
+(53)tb_post_sim.peri_top.DUMH_O[63:0]
+(54)tb_post_sim.peri_top.DUMH_O[63:0]
+(55)tb_post_sim.peri_top.DUMH_O[63:0]
+(56)tb_post_sim.peri_top.DUMH_O[63:0]
+(57)tb_post_sim.peri_top.DUMH_O[63:0]
+(58)tb_post_sim.peri_top.DUMH_O[63:0]
+(59)tb_post_sim.peri_top.DUMH_O[63:0]
+(60)tb_post_sim.peri_top.DUMH_O[63:0]
+(61)tb_post_sim.peri_top.DUMH_O[63:0]
+(62)tb_post_sim.peri_top.DUMH_O[63:0]
+(63)tb_post_sim.peri_top.DUMH_O[63:0]
+@1401200
+-group_end
+@22
+tb_post_sim.peri_top.DUML_O[7:0]
+tb_post_sim.peri_top.CSL_O[7:0]
+tb_post_sim.peri_top.BSEL_O[31:0]
+tb_post_sim.peri_top.CSEL_O[7:0]
+@23
+tb_post_sim.peri_top.DISC_O[31:0]
+@28
+tb_post_sim.peri_top.ADC_EN1_O
+tb_post_sim.peri_top.ADC_EN2_O
+tb_post_sim.peri_top.QDAC_O
+tb_post_sim.peri_top.RSEL_O[1:0]
+@22
+tb_post_sim.peri_top.EFLASH_OUTPUT_1_I[255:0]
+@200
+-OUTPUT BUFFER
+@22
+tb_post_sim.peri_top.o_b.buf_cnt_i[5:0]
+@28
+tb_post_sim.peri_top.o_b.buf_r_en_i
+tb_post_sim.peri_top.o_b.buf_w_en_1_i
+tb_post_sim.peri_top.o_b.buf_w_en_2_i
+@22
+tb_post_sim.peri_top.o_b.out_buf_data_o[31:0]
+tb_post_sim.peri_top.o_b.pim_output_i[255:0]
+@200
+-PERI CONTROLLER
+@28
+tb_post_sim.peri_top.p_c.pim_mode[2:0]
+tb_post_sim.peri_top.p_c.setup_finish
+tb_post_sim.peri_top.p_c.curr_state[1:0]
+[pattern_trace] 1
+[pattern_trace] 0
