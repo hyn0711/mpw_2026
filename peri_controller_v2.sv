@@ -179,7 +179,6 @@ module peri_controller_v2 #(
     end
 
     // ==|COUNTER|=============================
-
     always_ff @(posedge clk_i or negedge rst_ni) begin
         if (!rst_ni) begin
             counter <= '0;

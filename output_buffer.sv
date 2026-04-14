@@ -11,7 +11,8 @@ module output_buffer (
     input logic                 clk_i,
     input logic                 rst_ni,
 
-    input logic [255:0]         pim_output_i,
+    input logic [255:0]         MOUT_i,
+    input logic [255:0]         FOUT_i,
 
     // Control Signal
     input logic                 buf_w_en_1_i,
