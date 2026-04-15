@@ -122,6 +122,38 @@ module eFlash_driver_U (
                     for (int i = 112; i < 128; i++) begin
                         input_mem[i] <= input_data_i[31 - 2*(i%16) -: 2];
                     end
+                // end else if (data_cnt_i == 4'd8) begin
+                //     for (int i = 128; i < 144; i++) begin
+                //         input_mem[i] <= input_data_i[31 - 2*(i%16) -: 2];
+                //     end
+                // end else if (data_cnt_i == 4'd9) begin
+                //     for (int i = 144; i < 160; i++) begin
+                //         input_mem[i] <= input_data_i[31 - 2*(i%16) -: 2];
+                //     end
+                // end else if (data_cnt_i == 4'd10) begin
+                //     for (int i = 160; i < 176; i++) begin
+                //         input_mem[i] <= input_data_i[31 - 2*(i%16) -: 2];
+                //     end
+                // end else if (data_cnt_i == 4'd11) begin
+                //     for (int i = 176; i < 192; i++) begin
+                //         input_mem[i] <= input_data_i[31 - 2*(i%16) -: 2];
+                //     end
+                // end else if (data_cnt_i == 4'd12) begin
+                //     for (int i = 192; i < 208; i++) begin
+                //         input_mem[i] <= input_data_i[31 - 2*(i%16) -: 2];
+                //     end
+                // end else if (data_cnt_i == 4'd13) begin
+                //     for (int i = 208; i < 224; i++) begin
+                //         input_mem[i] <= input_data_i[31 - 2*(i%16) -: 2];
+                //     end
+                // end else if (data_cnt_i == 4'd14) begin
+                //     for (int i = 224; i < 240; i++) begin
+                //         input_mem[i] <= input_data_i[31 - 2*(i%16) -: 2];
+                //     end
+                // end else if (data_cnt_i == 4'd15) begin
+                //     for (int i = 240; i < 256; i++) begin
+                //         input_mem[i] <= input_data_i[31 - 2*(i%16) -: 2];
+                //     end
                 end else begin
                     for (int i = 0; i < 128; i++) begin
                         input_mem[i] <= input_mem[i];
@@ -395,7 +427,7 @@ module eFlash_driver_U (
                         duml = '0;
                         precb = 2'b11;
                         adc_en1 = '0;
-                        adc_en2 = '01;
+                        adc_en2 = '0;
                         qdac = 2'b11;
                         buf_write_en_1 = '0;
                         buf_write_en_2 = '0;
@@ -460,13 +492,13 @@ module eFlash_driver_U (
                         precb = 2'b11;
                         adc_en1 = '0;
                         buf_write_en_1 = '0;
-                    end else if (exec_cnt = 4'd3) begin
+                    end else if (exec_cnt == 4'd3) begin
                         dumh = '0;
                         duml = '0;
                         precb = 2'b11;
                         adc_en1 = '0;
                         buf_write_en_1 = '0;
-                    end else if (exec_cnt = 4'd2 || exec_cnt = 4'd1) begin
+                    end else if (exec_cnt == 4'd2 || exec_cnt == 4'd1) begin
                         dumh = '0;
                         duml = '0;
                         precb = 2'b11;

@@ -27,14 +27,15 @@ module output_buffer (
     logic [7:0]     buf_1 [0:31];
     logic [7:0]     buf_2 [0:31];
 
-    logic [7:0]     pim_output [0:31];
+    logic [7:0]     mout [0:31];
+    logic [7:0]     fout [0:31];
 
     always_comb begin
         for (int i = 0; i < 32; i++) begin
-            pim_output[i] = pim_output_i[255-8*i -: 8];
+            mout[i] = MOUT_i[8*i +: 8];
+            fout[i] = FOUT_i[8*i +: 8];
         end
     end
-
 
     // Buffer Write
     always_ff @(posedge clk_i or negedge rst_ni) begin
@@ -46,13 +47,13 @@ module output_buffer (
         end else begin
             if (buf_w_en_1_i) begin
                 for (int i = 0; i < 32; i++) begin
-                    buf_1[i] <= pim_output[i];
+                    buf_1[i] <= mout[i];
                     buf_2[i] <= buf_2[i];
                 end
             end else if (buf_w_en_2_i) begin
                 for (int i = 0; i < 32; i++) begin
                     buf_1[i] <= buf_1[i];
-                    buf_2[i] <= pim_output[i];
+                    buf_2[i] <= fout[i];
                 end
             end else begin
                 for (int i = 0; i < 32; i++) begin

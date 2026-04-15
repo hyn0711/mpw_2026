@@ -17,7 +17,7 @@ module peri_controller_v2 #(
     output logic [3:0]          exec_cnt_o,
 
     output logic [6:0]          row_addr7_o,
-    output logic [8:0]          col_addr9_o,
+    output logic [4:0]          col_addr5_o,
         
     // -> Input buffer
     output logic                in_buf_w_en_o,
@@ -43,7 +43,7 @@ module peri_controller_v2 #(
 
     logic [2:0] pim_mode;
     logic [6:0] row_addr;
-    logic [8:0] col_addr;
+    logic [4:0] col_addr;
     logic [16:0] pulse_width;
     logic [4:0] pulse_count;
 
@@ -149,17 +149,17 @@ module peri_controller_v2 #(
                 pim_mode <= pim_mode;
                 if (pim_mode == PIM_ERASE || pim_mode == PIM_PROGRAM) begin
                     row_addr <= address_i[15:9];
-                    col_addr <= address_i[8:0];
+                    col_addr <= address_i[4:0];
                     pulse_width <= data_i[21:5];
                     pulse_count <= data_i[4:0];
                 end else if (pim_mode == PIM_READ) begin
                     row_addr <= address_i[15:9];
-                    col_addr <= address_i[8:0];
+                    col_addr <= address_i[4:0];
                     pulse_width <= '0;
                     pulse_count <= '0;
                 end else if (pim_mode == PIM_PARALLEL || pim_mode == PIM_RBR) begin
                     row_addr <= address_i[15:9];
-                    col_addr <= address_i[8:0];
+                    col_addr <= address_i[4:0];
                     pulse_width <= '0;
                     pulse_count <= '0;
                 end else begin
@@ -239,7 +239,7 @@ module peri_controller_v2 #(
         pim_en_o = '0;
         pim_mode_o = '0;
         row_addr7_o = '0;
-        col_addr9_o = '0;
+        col_addr5_o = '0;
         exec_cnt_o = '0;
         in_buf_w_en_o = '0;
         in_buf_r_en_o = '0;
@@ -271,26 +271,26 @@ module peri_controller_v2 #(
                         pim_en_o = 1'b1;
                         pim_mode_o = pim_mode;
                         row_addr7_o = row_addr;
-                        col_addr9_o = col_addr;
+                        col_addr5_o = col_addr;
                     end else begin
                         pim_en_o = '0;
                         pim_mode_o = pim_mode;
                         row_addr7_o = row_addr;
-                        col_addr9_o = col_addr;
+                        col_addr5_o = col_addr;
                     end
                 end else if (pim_mode == PIM_READ) begin
                     if (counter != '0) begin
                         pim_en_o = 1'b1;
                         pim_mode_o = pim_mode;
                         row_addr7_o = row_addr;
-                        col_addr9_o = col_addr;
+                        col_addr5_o = col_addr;
                         exec_cnt_o = counter;
                         in_buf_r_en_o = '0;
                     end else begin
                         pim_en_o = '0;
                         pim_mode_o = '0;
                         row_addr7_o = '0;
-                        col_addr9_o = '0;
+                        col_addr5_o = '0;
                         exec_cnt_o = '0;
                         in_buf_r_en_o = '0;
                     end
@@ -299,14 +299,14 @@ module peri_controller_v2 #(
                         pim_en_o = 1'b1;
                         pim_mode_o = pim_mode;
                         row_addr7_o = row_addr;
-                        col_addr9_o = col_addr;
+                        col_addr5_o = col_addr;
                         exec_cnt_o = counter;
                         in_buf_r_en_o = 1'b1;
                     end else begin
                         pim_en_o = '0;
                         pim_mode_o = pim_mode;
                         row_addr7_o = '0;
-                        col_addr9_o = '0;
+                        col_addr5_o = '0;
                         exec_cnt_o = '0;
                         in_buf_r_en_o = '0;
                     end
@@ -322,7 +322,7 @@ module peri_controller_v2 #(
                     pim_en_o = '0;
                     pim_mode_o = '0;
                     row_addr7_o = '0;
-                    col_addr9_o = '0;
+                    col_addr5_o = '0;
                     exec_cnt_o = '0;
                     in_buf_w_en_o = '0;
                     in_buf_r_en_o = '0;
@@ -336,7 +336,7 @@ module peri_controller_v2 #(
                 pim_en_o = '0;
                 pim_mode_o = pim_mode;
                 row_addr7_o = '0;
-                col_addr9_o = '0;
+                col_addr5_o = '0;
                 exec_cnt_o = '0;
                 in_buf_w_en_o = '0;
                 in_buf_r_en_o = '0;

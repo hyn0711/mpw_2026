@@ -9,7 +9,7 @@ module eFlash_driver_T (
     input logic [3:0]           exec_cnt_i,
 
     input logic [6:0]           row_addr7_i,
-    input logic [8:0]           col_addr9_i,
+    input logic [4:0]           col_addr5_i,
 
     // Output Signal to PIM
     output logic [511:0]        MODE_o,  
@@ -54,7 +54,7 @@ module eFlash_driver_T (
     logic [2:0] row_c;
 
     assign row_a = row_addr7_i[3:0];
-    assign col_b = col_addr9_i[1:0];
+    assign col_b = col_addr5_i[1:0];
     assign row_c = row_addr7_i[6:4];
 
 
@@ -62,7 +62,7 @@ module eFlash_driver_T (
     always_comb begin
         mode = '0;
         wl_sel = '0;
-        vpass_en = '0;
+        vpass_en = 256'hFFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF;
         bl_opt = '0;
         csl = '0;
         qdac = 2'b11;
@@ -209,15 +209,20 @@ module eFlash_driver_T (
                 PIM_LOAD: begin    // Load mode
                 end
                 default: begin
-                    dumh_opt = '0;
-                    precb = 32'hFFFF_FFFF;
-                    disc = 1'b1
+                    mode = '0;
+                    wl_sel = '0;
+                    vpass_en = 256'hFFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF;
+                    bl_opt = '0;
+                    csl = '0;
+                    qdac = 2'b11;
+                    disc = 2'b11;
+                    precb = 2'b11;
                 end
             endcase
         end else begin
             mode = '0;
             wl_sel = '0;
-            vpass_en = '0;
+            vpass_en = 256'hFFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF;
             bl_opt = '0;
             csl = '0;
             qdac = 2'b11;
