@@ -211,6 +211,8 @@ module peri_top_mpw (
         .w_en_i(buf32_w_en),
         .r_en_i(buf32_r_en),
 
+        .buf32_cnt_i(buf32_cnt),
+
         .cycle_shift_data_i(post_processing_out),
 
         .data_o(output_32b)

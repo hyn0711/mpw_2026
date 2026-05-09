@@ -44,6 +44,8 @@ module tb_peri_top();
     wire [1:0] B_CSL_O;
     wire [31:0] B_BL_OPT_O;
 
+    wire[3:0] RSEL_O;
+
 
     always #(PER/2) CLK = ~CLK;
 
@@ -92,7 +94,9 @@ module tb_peri_top();
         .B_DISC_O(B_DISC_O),
         .B_QDAC_O(B_QDAC_O),
         .B_CSL_O(B_CSL_O),
-        .B_BL_OPT_O(B_BL_OPT_O)
+        .B_BL_OPT_O(B_BL_OPT_O),
+
+        .RSEL_O(RSEL_O)
     );
 
     // Pim mode ------------------------------------------------
@@ -164,10 +168,10 @@ module tb_peri_top();
             for (int i = 0; i < 1; i++) begin
                 @(negedge CLK);
                 ADDRESS_I = {12'h400, i[3:0], row[6:0], col[8:0]};
-                for (int j = 0; j < 8; j++) begin
+                for (int j = 8; j < 16; j++) begin
                     DATA_I[2 * j +: 2] = $urandom_range(0, 3);
                 end
-                for (int j = 8; j < 16; j++) begin
+                for (int j = 0; j < 8; j++) begin
                     DATA_I[2 * j +: 2] = '0;
                 end
                 $write("0x32h", DATA_I);
@@ -260,7 +264,25 @@ module tb_peri_top();
         send_dbg_load(16);
         repeat (10000) init_signals();
 
+        // Test debug mode
+        repeat(3) check_status();
+        send_mode_debug(0);
+        send_dbg_load(16); 
+        repeat (10000) init_signals();
+
         // Test rbr mode
+        repeat(3) check_status();
+        send_mode(PIM_RBR);
+        init_signals();
+        send_data(PIM_RBR, 1, 2, 0, 0);
+        repeat (10000) init_signals();
+
+        repeat(3) check_status();
+        send_mode(PIM_RBR);
+        init_signals();
+        send_data(PIM_RBR, 1, 2, 0, 0);
+        repeat (10000) init_signals();
+
         repeat(3) check_status();
         send_mode(PIM_RBR);
         init_signals();

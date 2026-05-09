@@ -180,8 +180,6 @@ module peri_controller_v2 #(
             pulse_width <= '0;
             pulse_count <= '0;
             debug_mode <= '0;
-            debug_count <= '0;
-            load_count <= '0;
         end else begin
             if (mode_received) begin
                 pim_mode <= data_i[2:0];
@@ -198,35 +196,21 @@ module peri_controller_v2 #(
                     col_addr <= address_i[4:0];
                     pulse_width <= data_i[21:5];
                     pulse_count <= data_i[4:0];
-                    debug_count <= '0;
-                    load_count <= '0;
                 end else if (pim_mode == PIM_READ) begin
                     row_addr <= address_i[15:9];
                     col_addr <= address_i[4:0];
                     pulse_width <= '0;
                     pulse_count <= '0;
-                    debug_count <= '0;
-                    load_count <= '0;
                 end else if (pim_mode == PIM_PARALLEL || pim_mode == PIM_RBR) begin
                     row_addr <= address_i[15:9];
                     col_addr <= address_i[4:0];
                     pulse_width <= '0;
                     pulse_count <= '0;
-                    debug_count <= '0;
-                    load_count <= '0;
-                end else if (pim_mode == PIM_DEBUG) begin
-                    debug_count <= address_i[19:16];
-                    load_count <= '0;
-                end else if (pim_mode == PIM_LOAD) begin
-                    load_count <= address_i[19:16];
-                    debug_count <= '0;
                 end else begin
                     row_addr <= row_addr;
                     col_addr <= col_addr;
                     pulse_width <= pulse_width;
                     pulse_count <= pulse_count;
-                    debug_count <= '0;
-                    load_count <= '0;
                 end
             end else begin
                 pim_mode <= pim_mode;
@@ -235,8 +219,6 @@ module peri_controller_v2 #(
                 pulse_width <= pulse_width;
                 pulse_count <= pulse_count;
                 debug_mode <= debug_mode;
-                debug_count <= '0;
-                load_count <= '0;
             end
         end
     end

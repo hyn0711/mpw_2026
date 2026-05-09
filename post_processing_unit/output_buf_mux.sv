@@ -75,6 +75,8 @@ module output_buf_mux (
                 mux_data_o = buf32_data_i[6];
             end else if (buf32_cnt_i == 4'd7) begin
                 mux_data_o = buf32_data_i[7];
+            end else begin
+                mux_data_o = '0;
             end
         end else begin
             mux_data_o = '0;

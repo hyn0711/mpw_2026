@@ -5,6 +5,8 @@ module output_32b_buf (
     input logic             w_en_i,
     input logic             r_en_i,
 
+    input logic [3:0]       buf32_cnt_i,
+
     input logic [19:0]      cycle_shift_data_i[0:7],
 
     output logic [31:0]     data_o[0:7]
@@ -26,6 +28,10 @@ module output_32b_buf (
             if (w_en_i) begin
                 for (int i = 0; i < 8; i++) begin
                     data_buf[i] <= data_buf[i] + cycle_shift_data_i[i];
+                end
+            end else if (r_en_i && buf32_cnt_i == 4'd7) begin
+                for (int i = 0; i < 8; i++) begin
+                    data_buf[i] <= '0;
                 end
             end else begin
                 for (int i = 0; i < 8; i++) begin

@@ -130,6 +130,9 @@ module eFlash_driver_U (
                 for (int i = 0; i < 8; i++) begin
                     input_data[i] = input_mem[i];
                 end
+                for (int i = 8; i < 64; i++) begin
+                    input_data[i] = '0;
+                end
             end else begin
                 for (int i = 0; i < 64; i++) begin
                     input_data[i] = '0;
