@@ -23,13 +23,13 @@ module eFlash_driver_T (
 );
 
     // eFlash mode
-    localparam PIM_ERASE = 3'b001;
-    localparam PIM_PROGRAM = 3'b010;
-    localparam PIM_READ = 3'b011;
-    localparam PIM_ZP = 3'b100;
-    localparam PIM_PARALLEL = 3'b101;
-    localparam PIM_RBR = 3'b110;
-    localparam PIM_LOAD = 3'b111;
+    localparam PIM_ERASE = 3'b001;      // PIM_ERASE
+    localparam PIM_PROGRAM = 3'b010;    // PIM_PROGRAM
+    localparam PIM_READ = 3'b011;       // PIM_READ
+    localparam PIM_DEBUG = 3'b100;      // PIM_DEBUG
+    localparam PIM_PARALLEL = 3'b101;   // PIM_PARALLEL
+    localparam PIM_RBR = 3'b110;        // PIM_RBR
+    localparam PIM_LOAD = 3'b111;       // PIM_LOAD
 
     logic pim_en;
     logic [2:0] pim_mode;
@@ -50,11 +50,11 @@ module eFlash_driver_T (
 
 
     logic [3:0] row_a;
-    logic [1:0] col_b;
+    logic [2:0] col_b;
     logic [2:0] row_c;
 
     assign row_a = row_addr7_i[3:0];
-    assign col_b = col_addr5_i[1:0];
+    assign col_b = col_addr5_i[2:0];
     assign row_c = row_addr7_i[6:4];
 
 
@@ -177,6 +177,7 @@ module eFlash_driver_T (
                         precb = 2'b11;
                     end
                 end
+
                 PIM_RBR: begin  
                     mode = {256{2'b10}};
                     bl_opt = '0;
@@ -207,6 +208,8 @@ module eFlash_driver_T (
                     end
                 end
                 PIM_LOAD: begin    // Load mode
+                end
+                PIM_DEBUG: begin
                 end
                 default: begin
                     mode = '0;

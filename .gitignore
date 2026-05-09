@@ -1,2 +1,5 @@
 *.gtkw
 *.vcd
+PIM_MACRO_DUMMY_1.sv
+PIM_MACRO_DUMMY_2.sv
+PERI_TOP.sv

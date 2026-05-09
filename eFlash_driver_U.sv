@@ -24,7 +24,7 @@ module eFlash_driver_U (
     // Output Signal to PIM
     output logic [31:0]         BL_OPT_o,
     output logic [15:0]         DUMH_OPT_o,
-    output logic [255:0]        DUMH_o,
+    output logic [127:0]        DUMH_o,
     output logic [15:0]         DUML_o,
     output logic [1:0]          CSL_o,
     output logic [127:0]        ADC_EN1_o,
@@ -34,19 +34,19 @@ module eFlash_driver_U (
     output logic [1:0]          PRECB_o,
     output logic [3:0]          RSEL_o,
 
-    // Output buffer 
+    // Output buffer (8b buffer)
     output logic                buf_write_en_1_o,
     output logic                buf_write_en_2_o
 );
 
     // eFlash mode
-    localparam PIM_ERASE = 3'b001;
-    localparam PIM_PROGRAM = 3'b010;
-    localparam PIM_READ = 3'b011;
-    localparam PIM_ZP = 3'b100;
-    localparam PIM_PARALLEL = 3'b101;
-    localparam PIM_RBR = 3'b110;
-    localparam PIM_LOAD = 3'b111;
+    localparam PIM_ERASE = 3'b001;      // PIM_ERASE
+    localparam PIM_PROGRAM = 3'b010;    // PIM_PROGRAM
+    localparam PIM_READ = 3'b011;       // PIM_READ
+    localparam PIM_DEBUG = 3'b100;      // PIM_DEBUG
+    localparam PIM_PARALLEL = 3'b101;   // PIM_PARALLEL
+    localparam PIM_RBR = 3'b110;        // PIM_RBR
+    localparam PIM_LOAD = 3'b111;       // PIM_LOAD
 
     // Signal
     logic [31:0] bl_opt;
@@ -61,7 +61,7 @@ module eFlash_driver_U (
     logic [3:0] rsel;
 
     logic [3:0] row_a;
-    logic [1:0] col_b;
+    logic [2:0] col_b;
     logic [2:0] row_c;
 
     assign row_a = row_addr7_i[3:0];
@@ -79,13 +79,13 @@ module eFlash_driver_U (
     logic buf_write_en_1, buf_write_en_2;
 
 // --------------------------- input buffer ---------------------------
-    logic [1:0]     input_mem [0:127];
-    logic [1:0]     input_data [0:127];
+    logic [1:0]     input_mem [0:63];
+    logic [1:0]     input_data [0:63];
 
     // Write input data in the buffer
     always_ff @ (posedge clk_i or negedge rst_ni) begin
         if (!rst_ni) begin
-            for (int i = 0; i < 127; i++) begin
+            for (int i = 0; i < 64; i++) begin
                 input_mem[i] <= '0;
             end
         end else begin
@@ -106,61 +106,13 @@ module eFlash_driver_U (
                     for (int i = 48; i < 64; i++) begin
                         input_mem[i] <= input_data_i[31 - 2*(i%16) -: 2];
                     end
-                end else if (data_cnt_i == 4'd4) begin
-                    for (int i = 64; i < 80; i++) begin
-                        input_mem[i] <= input_data_i[31 - 2*(i%16) -: 2];
-                    end
-                end else if (data_cnt_i == 4'd5) begin
-                    for (int i = 80; i < 96; i++) begin
-                        input_mem[i] <= input_data_i[31 - 2*(i%16) -: 2];
-                    end
-                end else if (data_cnt_i == 4'd6) begin
-                    for (int i = 96; i < 112; i++) begin
-                        input_mem[i] <= input_data_i[31 - 2*(i%16) -: 2];
-                    end
-                end else if (data_cnt_i == 4'd7) begin
-                    for (int i = 112; i < 128; i++) begin
-                        input_mem[i] <= input_data_i[31 - 2*(i%16) -: 2];
-                    end
-                // end else if (data_cnt_i == 4'd8) begin
-                //     for (int i = 128; i < 144; i++) begin
-                //         input_mem[i] <= input_data_i[31 - 2*(i%16) -: 2];
-                //     end
-                // end else if (data_cnt_i == 4'd9) begin
-                //     for (int i = 144; i < 160; i++) begin
-                //         input_mem[i] <= input_data_i[31 - 2*(i%16) -: 2];
-                //     end
-                // end else if (data_cnt_i == 4'd10) begin
-                //     for (int i = 160; i < 176; i++) begin
-                //         input_mem[i] <= input_data_i[31 - 2*(i%16) -: 2];
-                //     end
-                // end else if (data_cnt_i == 4'd11) begin
-                //     for (int i = 176; i < 192; i++) begin
-                //         input_mem[i] <= input_data_i[31 - 2*(i%16) -: 2];
-                //     end
-                // end else if (data_cnt_i == 4'd12) begin
-                //     for (int i = 192; i < 208; i++) begin
-                //         input_mem[i] <= input_data_i[31 - 2*(i%16) -: 2];
-                //     end
-                // end else if (data_cnt_i == 4'd13) begin
-                //     for (int i = 208; i < 224; i++) begin
-                //         input_mem[i] <= input_data_i[31 - 2*(i%16) -: 2];
-                //     end
-                // end else if (data_cnt_i == 4'd14) begin
-                //     for (int i = 224; i < 240; i++) begin
-                //         input_mem[i] <= input_data_i[31 - 2*(i%16) -: 2];
-                //     end
-                // end else if (data_cnt_i == 4'd15) begin
-                //     for (int i = 240; i < 256; i++) begin
-                //         input_mem[i] <= input_data_i[31 - 2*(i%16) -: 2];
-                //     end
                 end else begin
-                    for (int i = 0; i < 128; i++) begin
+                    for (int i = 0; i < 64; i++) begin
                         input_mem[i] <= input_mem[i];
                     end
                 end
             end else begin
-                for (int i = 0; i < 128; i++) begin
+                for (int i = 0; i < 64; i++) begin
                     input_mem[i] <= input_mem[i];
                 end
             end
@@ -170,24 +122,21 @@ module eFlash_driver_U (
     // Read the input data
     always_comb begin
         if (in_buf_read_i) begin
-            for (int i = 0; i < 128; i++) begin
-                input_data[i] = '0;
-            end
             if (pim_mode == PIM_PARALLEL) begin
-                for (int i = 0; i < 128; i++) begin
+                for (int i = 0; i < 64; i++) begin
                     input_data[i] = input_mem[i];
                 end
             end else if (pim_mode == PIM_RBR) begin
-                for (int i = 0; i < 16; i++) begin
+                for (int i = 0; i < 8; i++) begin
                     input_data[i] = input_mem[i];
                 end
             end else begin
-                for (int i = 0; i < 128; i++) begin
+                for (int i = 0; i < 64; i++) begin
                     input_data[i] = '0;
                 end
             end
         end else begin
-            for (int i = 0; i < 128; i++) begin
+            for (int i = 0; i < 64; i++) begin
                 input_data[i] = '0;
             end
         end
@@ -275,14 +224,14 @@ module eFlash_driver_U (
                     if (exec_cnt == 4'd9 || exec_cnt == 4'd8 || exec_cnt == 4'd7) begin
                         for (int unsigned j = 0; j < 8; j++) begin
                             if (j == col_b) begin
-                                for (int unsigned k = 0; k < 16; k++) begin
+                                for (int unsigned k = 0; k < 8; k++) begin
                                     dumh[8 * k + j] = 1'b1;
-                                    dumh[8 * k + j + 128] = 1'b1;
+                                    dumh[8 * k + j + 64] = 1'b1;
                                 end
                             end else begin
-                                for (int unsigned k = 0; k < 16; k++) begin
+                                for (int unsigned k = 0; k < 8; k++) begin
                                     dumh[8 * k + j] = 1'b0;
-                                    dumh[8 * k + j + 128] = 1'b0;
+                                    dumh[8 * k + j + 64] = 1'b0;
                                 end
                             end
                         end
@@ -293,14 +242,14 @@ module eFlash_driver_U (
                     end else if (exec_cnt == 4'd6) begin
                         for (int unsigned j = 0; j < 8; j++) begin
                             if (j == col_b) begin
-                                for (int unsigned k = 0; k < 16; k++) begin
+                                for (int unsigned k = 0; k < 8; k++) begin
                                     dumh[8 * k + j] = 1'b1;
-                                    dumh[8 * k + j + 128] = 1'b1;
+                                    dumh[8 * k + j + 64] = 1'b1;
                                 end
                             end else begin
-                                for (int unsigned k = 0; k < 16; k++) begin
+                                for (int unsigned k = 0; k < 8; k++) begin
                                     dumh[8 * k + j] = 1'b0;
-                                    dumh[8 * k + j + 128] = 1'b0;
+                                    dumh[8 * k + j + 64] = 1'b0;
                                 end
                             end
                         end
@@ -346,27 +295,27 @@ module eFlash_driver_U (
                         buf_write_en_1 = '0;
                         buf_write_en_2 = '0;
                     end else if (exec_cnt == 4'd9 || exec_cnt == 4'd8 || exec_cnt == 4'd7) begin
-                        for (int unsigned i = 0; i < 128; i++) begin
+                        for (int unsigned i = 0; i < 64; i++) begin
                             case (input_data[i])
                                 2'b00: begin
                                     dumh[i] = '0;
-                                    dumh[i + 128] = '0;
+                                    dumh[i + 64] = '0;
                                 end
                                 2'b01: begin
                                     dumh[i] = (exec_cnt == 4'd9);
-                                    dumh[i + 128] = (exec_cnt == 4'd9);
+                                    dumh[i + 64] = (exec_cnt == 4'd9);
                                 end
                                 2'b10: begin
                                     dumh[i] = (exec_cnt == 4'd9 || exec_cnt == 4'd8);
-                                    dumh[i + 128] = (exec_cnt == 4'd9 || exec_cnt == 4'd8);
+                                    dumh[i + 64] = (exec_cnt == 4'd9 || exec_cnt == 4'd8);
                                 end
                                 2'b11: begin
                                     dumh[i] = 1'b1;
-                                    dumh[i + 128] = 1'b1;
+                                    dumh[i + 64] = 1'b1;
                                 end
                                 default: begin
                                     dumh[i] = '0;
-                                    dumh[i + 128] = '0;
+                                    dumh[i + 64] = '0;
                                 end
                             endcase
                         end
@@ -447,14 +396,14 @@ module eFlash_driver_U (
                     if (exec_cnt == 4'd9 || exec_cnt == 4'd8 || exec_cnt == 4'd7) begin             
                         for (int unsigned i = 0; i < 8; i++) begin
                             if (i == col_b) begin
-                                for (int unsigned j = 0; j < 16; j++) begin
+                                for (int unsigned j = 0; j < 8; j++) begin
                                     dumh[8 * j + i] = 1'b1;
-                                    dumh[8 * j + i + 128] = 1'b1;
+                                    dumh[8 * j + i + 64] = 1'b1;
                                 end
                             end else begin
-                                for (int unsigned j = 0; j < 16; j++) begin
+                                for (int unsigned j = 0; j < 8; j++) begin
                                     dumh[8 * j + i] = '0;
-                                    dumh[8 * j + i + 128] = '0;
+                                    dumh[8 * j + i + 64] = '0;
                                 end
                             end
                         end
@@ -464,27 +413,27 @@ module eFlash_driver_U (
                         buf_write_en_1 = '0;
                     end else if (exec_cnt == 4'd6 || exec_cnt == 4'd5 || exec_cnt == 4'd4) begin
                         dumh = '0;
-                        for (int unsigned i = 0; i < 16; i++) begin
+                        for (int unsigned i = 0; i < 8; i++) begin
                             case (input_data[i]) 
                                 2'b00: begin
                                     dumh[8 * i + col_b] = '0;
-                                    dumh[8 * i + col_b + 128] = '0;
+                                    dumh[8 * i + col_b + 64] = '0;
                                 end
                                 2'b01: begin
                                     dumh[8 * i + col_b] = (exec_cnt == 4'd6);
-                                    dumh[8 * i + col_b + 128] = (exec_cnt == 4'd6);
+                                    dumh[8 * i + col_b + 64] = (exec_cnt == 4'd6);
                                 end
                                 2'b10: begin
                                     dumh[8 * i + col_b] = (exec_cnt == 4'd6 || exec_cnt == 4'd5);
-                                    dumh[8 * i + col_b + 128] = (exec_cnt == 4'd6 || exec_cnt == 4'd5);
+                                    dumh[8 * i + col_b + 64] = (exec_cnt == 4'd6 || exec_cnt == 4'd5);
                                 end
                                 2'b11: begin
                                     dumh[8 * i + col_b] = 1'b1;
-                                    dumh[8 * i + col_b + 128] = 1'b1;
+                                    dumh[8 * i + col_b + 64] = 1'b1;
                                 end
                                 default: begin
                                     dumh[8 * i + col_b] = '0;
-                                    dumh[8 * i + col_b + 128] = '0;
+                                    dumh[8 * i + col_b + 64] = '0;
                                 end
                             endcase
                         end
@@ -514,6 +463,9 @@ module eFlash_driver_U (
                 end
 
                 PIM_LOAD: begin
+                end
+
+                PIM_DEBUG: begin
                 end
 
                 default: begin
