@@ -65,12 +65,20 @@ void pim_program(uint32_t pulse_width, uint8_t pulse_count, uint8_t row, uint16_
     return;
 }
 
-void pim_read (uint32_t buffer_addr, uint8_t row, uint16_t col) {
+// void pim_read (uint32_t buffer_addr, uint8_t row, uint16_t col) {
+//     uint32_t row_col = (row << 9) | col;
+//     asm volatile (
+//         "pim_read %[a], 0(%[b])\n\t"
+//         :
+//         : [a] "r" (buffer_addr), [b] "r" (row_col)
+//     );
+// }
+void pim_read (uint8_t row, uint16_t col) {
     uint32_t row_col = (row << 9) | col;
     asm volatile (
-        "pim_read %[a], 0(%[b])\n\t"
+        "pim_read x0, 0(%[b])\n\t"
         :
-        : [a] "r" (buffer_addr), [b] "r" (row_col)
+        : [b] "r" (row_col)
     );
 }
 

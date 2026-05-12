@@ -103,13 +103,13 @@ int main(void) {
             //uwrite_int8s("\n\r");
         } else if (strcmp(input, "pim_read") == 0) {
             /* Instruction parsing */
-            int8_t *str_buffer_addr = read_token(buf_buffer_addr, BUFFER_LEN, " \x0d");
+            // int8_t *str_buffer_addr = read_token(buf_buffer_addr, BUFFER_LEN, " \x0d");
             int8_t *str_row = read_token(buf_row, BUFFER_LEN, " \x0d");
             int8_t *str_col = read_token(buf_col, BUFFER_LEN, " \x0d");
-            uint32_t buffer_addr = ascii_hex_to_uint32(str_buffer_addr);
+            // uint32_t buffer_addr = ascii_hex_to_uint32(str_buffer_addr);
             uint8_t row = (uint8_t)ascii_dec_to_uint32(str_row);
             uint16_t col = (uint16_t)ascii_dec_to_uint32(str_col);
-            pim_read(buffer_addr, row, col);    
+            pim_read(row, col);    
 
             /* print parameter */
             //uwrite_int8s("pim_write "); uwrite_int8s(uint32_to_ascii_hex(source_addr, str_source_addr, BUFFER_LEN)); 
