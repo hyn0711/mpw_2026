@@ -90,7 +90,7 @@ module eFlash_driver_T (
                     precb = 2'b11;
                 end
                 PIM_PROGRAM: begin    
-                    mode = {256{2'b01}};
+                    mode = {256{2'b10}};
                     for (int unsigned i = 0; i < 128; i++) begin
                         if (i == row_addr7_i) begin
                             wl_sel[i] = 1'b1;
@@ -117,7 +117,7 @@ module eFlash_driver_T (
                     precb = 2'b11;
                 end
                 PIM_READ: begin   
-                    mode = {256{2'b10}};
+                    mode = {256{2'b01}};
                     bl_opt = '0;
                     csl = '0;
                     qdac = 2'b11;
@@ -142,7 +142,7 @@ module eFlash_driver_T (
                     end
                 end
                 PIM_PARALLEL: begin    
-                    mode = {256{2'b10}};
+                    mode = {256{2'b01}};
                     bl_opt = '0;
                     csl = '0;
                     disc = '0;
@@ -179,7 +179,7 @@ module eFlash_driver_T (
                 end
 
                 PIM_RBR: begin  
-                    mode = {256{2'b10}};
+                    mode = {256{2'b01}};
                     bl_opt = '0;
                     csl = '0;
                     qdac = 2'b11;

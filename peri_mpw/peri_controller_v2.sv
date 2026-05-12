@@ -458,8 +458,10 @@ module peri_controller_v2 #(
         end else begin
             if ((pim_mode == PIM_READ || pim_mode == PIM_PARALLEL || pim_mode == PIM_RBR) && (counter == 4'd1)) begin
                 pim_data_valid <= 1'b1;
-            end else if (pim_mode == PIM_LOAD) begin
+            end else if (pim_mode == PIM_ERASE || pim_mode == PIM_PROGRAM) begin
                 pim_data_valid <= '0;
+            end else if (pim_mode == PIM_LOAD || pim_mode == PIM_DEBUG) begin
+                pim_data_valid <= pim_data_valid;
             end else begin
                 pim_data_valid <= pim_data_valid;
             end
