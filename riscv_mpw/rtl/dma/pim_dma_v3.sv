@@ -202,11 +202,13 @@ module pim_dma_v3 #(
         case (funct3)
             PIM_ERASE: pim_write_addr = PIM_BASE_ADDR + rc_addr;
             PIM_PROGRAM: pim_write_addr = PIM_BASE_ADDR + rc_addr;
-            PIM_DEBUG: pim_read_addr = PIM_BASE_ADDR | ({10'h0,{debug_mode - 2'd1}, rev_trans_counter[3:0], 16'h0});
-           PIM_READ: pim_read_addr = PIM_BASE_ADDR + rc_addr;
+            PIM_DEBUG: pim_read_addr = PIM_BASE_ADDR;
+            // PIM_DEBUG: pim_read_addr = PIM_BASE_ADDR | ({10'h0,{debug_mode - 2'd1}, rev_trans_counter[3:0], 16'h0});
+            PIM_READ: pim_read_addr = PIM_BASE_ADDR + rc_addr;
             PIM_PARALLEL: pim_write_addr = (PIM_BASE_ADDR + rc_addr) | ({12'h0, rev_trans_counter[3:0], 16'h0});
             PIM_RBR: pim_write_addr = (PIM_BASE_ADDR + rc_addr) | ({12'h0, rev_trans_counter[3:0], 16'h0});            
-            PIM_LOAD: pim_read_addr = PIM_BASE_ADDR | ({12'h0, rev_trans_counter[3:0], 16'h0});
+            // PIM_LOAD: pim_read_addr = PIM_BASE_ADDR | ({12'h0, rev_trans_counter[3:0], 16'h0});
+            PIM_LOAD: pim_read_addr = PIM_BASE_ADDR;
 			default: begin
                 pim_write_addr = '0;
                 pim_read_addr = '0;
@@ -319,6 +321,17 @@ module pim_dma_v3 #(
                 end
             end
             RW_EXE: begin
+                // if (!trans_running) begin   
+                //     if ((funct3 == PIM_LOAD) || (funct3 == PIM_DEBUG)) begin
+                //         next_state = W_EXE;
+                //     end else begin
+                //         next_state = IDLE;
+                //     end
+                // end else if (!bus_gnt_i) begin
+                //     next_state = RW_EXE;
+                // end else begin              // bus_gnt
+                //     next_state = RW_EXE;
+                // end
                 if (!trans_running) begin   
                     next_state = IDLE;
                 end else if (!bus_gnt_i) begin
@@ -328,11 +341,11 @@ module pim_dma_v3 #(
                 end
             end
             W_EXE: begin
-                if (!trans_running) begin   
-                    next_state = IDLE;
-                end else if (!bus_gnt_i) begin
+                if (!bus_gnt_i) begin
                     next_state = W_EXE;
-                end else begin              // bus_gnt
+                end else if (!trans_running) begin
+                    next_state = IDLE;
+                end else begin
                     next_state = W_EXE;
                 end
             end
@@ -376,6 +389,7 @@ module pim_dma_v3 #(
             MODE_EXE: begin     // Send the mode data to PIM
                 dma_busy_o = 1'b1;
                 bus_req_o = 1'b1;
+                // count_start = 1'b1;
                 count_start = ((funct3 == PIM_LOAD) || (funct3 == PIM_DEBUG)) ? 1'b0: 1'b1;
                 // write PIM mode
                 dma_addr_1_o = PIM_MODE;
@@ -388,13 +402,25 @@ module pim_dma_v3 #(
                     dma_wr_data_1_o = {29'b0, funct3};
                 end
             end
+            R_WAIT_0: begin
+                dma_busy_o = 1'b1;
+                bus_req_o = 1'b1;
+                // cnt_decr = 1'b1;
+                count_start = 1'b1;
+
+                dma_addr_1_o =  pim_read_addr;
+                dma_write_1_o = '0;
+                dma_read_1_o = 1'b0;
+                dma_size_1_o = 4'b1111;
+                dma_wr_data_1_o = '0;
+            end
             R_EXE: begin
                 dma_busy_o = 1'b1;
                 bus_req_o = 1'b1;
                 if (bus_gnt_i) begin
                     cnt_decr = 1'b0;
                     if (funct3 == PIM_LOAD || funct3 == PIM_DEBUG) begin
-                        cnt_decr = 1'b1;
+                        // cnt_decr = 1'b1;
                         mem_incr = 1'b0;
                         dma_addr_0_o = '0;
                         dma_write_0_o = 1'b0;
@@ -450,17 +476,6 @@ module pim_dma_v3 #(
                     dma_wr_data_1_o = '0;
                 end
             end          
-            R_WAIT_0: begin
-                dma_busy_o = 1'b1;
-                bus_req_o = 1'b1;
-                count_start = '0;
-
-                dma_addr_1_o =  pim_read_addr;
-                dma_write_1_o = '0;
-                dma_read_1_o = 1'b0;
-                dma_size_1_o = 4'b1111;
-                dma_wr_data_1_o = '0;
-            end
             RW_EXE: begin
                 dma_busy_o = 1'b1;
                 bus_req_o = 1'b1;
@@ -468,7 +483,6 @@ module pim_dma_v3 #(
                     cnt_decr = 1'b1;    
                     mem_incr = 1'b1;
                     if (funct3 == PIM_LOAD || funct3 == PIM_DEBUG) begin
-                        mem_incr = 1'b1;
                         dma_addr_0_o = mem_addr;
                         dma_write_0_o = 1'b1;
                         dma_read_0_o = 1'b0;
