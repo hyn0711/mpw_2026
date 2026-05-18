@@ -1,7 +1,8 @@
 `timescale 1ns / 1ps
 module fpga_top(
-    input sysclk_n,
-    input sysclk_p,
+    input sysclk_in,
+    // input sysclk_n,
+    // input sysclk_p,
     input rst_ni,
     input spi_rst_ni,
 
@@ -39,10 +40,18 @@ module fpga_top(
     wire sclk, cs, mosi, miso;
 
     // clock wiazard
+    // clk_wiz_0 u_clk_wiz (
+    //     .clk_out1(sysclk),
+    //     .clk_in1_p(sysclk_p),
+    //     .clk_in1_n(sysclk_n)
+    // );
+
+    // Single-ended
     clk_wiz_0 u_clk_wiz (
         .clk_out1(sysclk),
-        .clk_in1_p(sysclk_p),
-        .clk_in1_n(sysclk_n)
+        .clk_in1(sysclk_in),
+        .reset(1'b0),
+        .locked()
     );
 
     // ─── SPI IOB ───────────────────────────────────────────

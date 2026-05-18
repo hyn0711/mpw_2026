@@ -45,7 +45,7 @@ void dump_buffer(uint32_t source_addr, uint32_t size) {
 
 void pim_erase(uint32_t pulse_width, uint8_t pulse_count, uint8_t row) {
     uint32_t width_count = (pulse_width << 5) | pulse_count;
-    uint32_t row_col = (row << 9) | 0x0; // Column is not used in erase operation, set to 0
+    uint32_t row_col = (row << 5) | 0x0; // Column is not used in erase operation, set to 0
     asm volatile ( 
         "pim_erase %[a], 0(%[b])\n\t"
         :
@@ -56,7 +56,7 @@ void pim_erase(uint32_t pulse_width, uint8_t pulse_count, uint8_t row) {
 
 void pim_program(uint32_t pulse_width, uint8_t pulse_count, uint8_t row, uint16_t col) {
     uint32_t width_count = (pulse_width << 5) | pulse_count;
-    uint32_t row_col = (row << 9) | col;
+    uint32_t row_col = (row << 5) | col;
     asm volatile (
         "pim_program %[a], 0(%[b])\n\t"
         :
@@ -74,7 +74,7 @@ void pim_program(uint32_t pulse_width, uint8_t pulse_count, uint8_t row, uint16_
 //     );
 // }
 void pim_read (uint8_t row, uint16_t col) {
-    uint32_t row_col = (row << 9) | col;
+    uint32_t row_col = (row << 5) | col;
     asm volatile (
         "pim_read x0, 0(%[b])\n\t"
         :
@@ -83,7 +83,7 @@ void pim_read (uint8_t row, uint16_t col) {
 }
 
 void pim_parallel(uint32_t buffer_addr, uint8_t row, uint16_t col) {
-    uint32_t row_col = (row << 9) | col;
+    uint32_t row_col = (row << 5) | col;
     asm volatile (
         "pim_parallel %[a], 0(%[b])\n\t"
         :
@@ -92,7 +92,7 @@ void pim_parallel(uint32_t buffer_addr, uint8_t row, uint16_t col) {
     return;
 }
 void pim_rbr(uint32_t buffer_addr, uint8_t row, uint16_t col) {
-    uint32_t row_col = (row << 9) | col;
+    uint32_t row_col = (row << 5) | col;
     asm volatile (
         "pim_rbr %[a], 0(%[b])\n\t"
         :

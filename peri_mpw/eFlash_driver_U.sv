@@ -32,7 +32,7 @@ module eFlash_driver_U (
     output logic [1:0]          QDAC_o,
     output logic [1:0]          DISC_o,
     output logic [1:0]          PRECB_o,
-    output logic [3:0]          RSEL_o,
+    output logic [31:0]         RSEL_o,
 
     // Output buffer (8b buffer)
     output logic                buf_write_en_1_o,
@@ -58,7 +58,7 @@ module eFlash_driver_U (
     logic [1:0] qdac;
     logic [1:0] disc;
     logic [1:0] precb;
-    logic [3:0] rsel;
+    logic [31:0] rsel;
 
     logic [3:0] row_a;
     logic [2:0] col_b;
@@ -220,7 +220,7 @@ module eFlash_driver_U (
                     adc_en2 = '0;
                     qdac = 2'b11;
                     disc = '0;
-                    rsel = 4'b0101;
+                    rsel = {16{2'b01}};
 
                     buf_write_en_2 = '0;
 
@@ -286,7 +286,7 @@ module eFlash_driver_U (
                     dumh_opt = '0;
                     csl = '0;
                     disc = '0;
-                    rsel = 4'b1010;
+                    rsel = {16{2'b10}};
 
                     if (exec_cnt == 4'd12 || exec_cnt == 4'd11 || exec_cnt == 4'd10) begin
                         dumh = 256'hFFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF;
@@ -394,7 +394,7 @@ module eFlash_driver_U (
                     buf_write_en_2 = '0;
                     qdac = 2'b11;
                     disc = '0;
-                    rsel = 4'b0101;
+                    rsel = {16{2'b01}};
 
                     if (exec_cnt == 4'd9 || exec_cnt == 4'd8 || exec_cnt == 4'd7) begin             
                         for (int unsigned i = 0; i < 8; i++) begin

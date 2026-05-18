@@ -68,7 +68,7 @@ module mpw_top #(
 	end
 	assign sync_spi_rst_n = spi_rst_n[4];
 
-    core_top #(
+    core_top_v2 #(
         .FPGA(FPGA),
         .RESET_PC(RESET_PC)
     ) core_u (

@@ -11,6 +11,8 @@ int main(void) {
     // clock frequency: 100MHz
     // baud rate: 115200
     uart_init(100000000, 115200);
+    // *((volatile uint32_t*)0x8000000C) = 868;  
+    // *((volatile uint32_t*)0x80000010) = 434;
 
     // initialize buffer first (for debugging)
     (*((volatile uint32_t*)0x20000000)) = 0x12345678;

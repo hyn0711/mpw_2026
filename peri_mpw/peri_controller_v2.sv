@@ -192,17 +192,17 @@ module peri_controller_v2 #(
                 pim_mode <= pim_mode;
                 debug_mode <= debug_mode;
                 if (pim_mode == PIM_ERASE || pim_mode == PIM_PROGRAM) begin
-                    row_addr <= address_i[15:9];
+                    row_addr <= address_i[11:5];
                     col_addr <= address_i[4:0];
                     pulse_width <= data_i[21:5];
                     pulse_count <= data_i[4:0];
                 end else if (pim_mode == PIM_READ) begin
-                    row_addr <= address_i[15:9];
+                    row_addr <= address_i[11:5];
                     col_addr <= address_i[4:0];
                     pulse_width <= '0;
                     pulse_count <= '0;
                 end else if (pim_mode == PIM_PARALLEL || pim_mode == PIM_RBR) begin
-                    row_addr <= address_i[15:9];
+                    row_addr <= address_i[11:5];
                     col_addr <= address_i[4:0];
                     pulse_width <= '0;
                     pulse_count <= '0;

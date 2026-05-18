@@ -43,12 +43,12 @@ def word_to_bytes_little_endian(word: str) -> Tuple[str, str, str, str]:
 
 def split_memory(words: List[str]) -> Tuple[List[str], List[str]]:
     """Split words into IMEM and DMEM"""
-    total_words_needed = 8192
+    total_words_needed = 12288  # 8192 (IMEM) + 4096 (DMEM)
     if len(words) < total_words_needed:
         words.extend(['00000000'] * (total_words_needed - len(words)))
     
-    imem_words = words[0:4096]
-    dmem_words = words[4096:8192]
+    imem_words = words[0:8192]
+    dmem_words = words[8192:12288]
     
     return imem_words, dmem_words
 
