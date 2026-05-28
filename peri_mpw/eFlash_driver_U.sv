@@ -33,6 +33,7 @@ module eFlash_driver_U (
     output logic [1:0]          DISC_o,
     output logic [1:0]          PRECB_o,
     output logic [31:0]         RSEL_o,
+    output logic [127:0]        CSEL_o,
 
     // Output buffer (8b buffer)
     output logic                buf_write_en_1_o,
@@ -59,6 +60,7 @@ module eFlash_driver_U (
     logic [1:0] disc;
     logic [1:0] precb;
     logic [31:0] rsel;
+    logic [127:0] csel;
 
     logic [3:0] row_a;
     logic [2:0] col_b;
@@ -159,6 +161,7 @@ module eFlash_driver_U (
         disc = 2'b11;
         precb = 2'b11;
         rsel = '0;
+        csel = '0;
 
         buf_write_en_1 = '0;
         buf_write_en_2 = '0;
@@ -180,6 +183,7 @@ module eFlash_driver_U (
                     disc = 2'b11;
                     precb = 2'b11;
                     rsel = '0;
+                    csel = 128'hFFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF;
                 end
 
                 PIM_PROGRAM: begin      // Program mode
@@ -211,6 +215,7 @@ module eFlash_driver_U (
                     disc = 2'b11;
                     precb = 2'b11;
                     rsel = '0;
+                    csel = 128'hFFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF;
                 end
 
                 PIM_READ: begin
@@ -219,7 +224,6 @@ module eFlash_driver_U (
                     csl = '0;
                     adc_en2 = '0;
                     qdac = 2'b11;
-                    disc = '0;
                     rsel = {16{2'b01}};
 
                     buf_write_en_2 = '0;
@@ -242,6 +246,8 @@ module eFlash_driver_U (
                         precb = '0;
                         adc_en1 = '0;
                         buf_write_en_1 = '0;
+                        csel = '0;
+                        disc = 2'b11;
                     end else if (exec_cnt == 4'd6) begin
                         for (int unsigned j = 0; j < 8; j++) begin
                             if (j == col_b) begin
@@ -260,24 +266,64 @@ module eFlash_driver_U (
                         precb = 2'b11;
                         adc_en1 = '0;
                         buf_write_en_1 = '0;
-                    end else if (exec_cnt == 4'd5 || exec_cnt == 4'd4 || exec_cnt == 4'd3) begin
+                        csel = '0;
+                        disc = 2'b11;
+                    end else if (exec_cnt == 4'd5 || exec_cnt == 4'd4) begin
                         dumh = '0;
                         duml = '0;
                         precb = 2'b11;
                         adc_en1 = '0;
                         buf_write_en_1 = '0;
+                        csel = '0;
+                        disc = 2'b11;
+                    end else if (exec_cnt == 4'd3) begin
+                        dumh = '0;
+                        duml = '0;
+                        precb = 2'b11;
+                        adc_en1 = '0;
+                        buf_write_en_1 = '0;
+                        disc = '0;
+                        for (int unsigned j = 0; j < 8; j++) begin
+                            if (j == col_b) begin
+                                for (int unsigned k = 0; k < 8; k++) begin
+                                    csel[8 * k + j] = 1'b1;
+                                    csel[8 * k + j + 64] = 1'b1;
+                                end
+                            end else begin
+                                for (int unsigned k = 0; k < 8; k++) begin
+                                    csel[8 * k + j] = '0;
+                                    csel[8 * k + j + 64] = '0;
+                                end
+                            end
+                        end
                     end else if (exec_cnt == 4'd2 || exec_cnt == 4'd1) begin
                         dumh = '0;
                         duml = '0;
                         precb = 2'b11;
                         adc_en1 = 128'hFFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF;
                         buf_write_en_1 = 1'b1;
+                        disc = '0;
+                        for (int unsigned j = 0; j < 8; j++) begin
+                            if (j == col_b) begin
+                                for (int unsigned k = 0; k < 8; k++) begin
+                                    csel[8 * k + j] = 1'b1;
+                                    csel[8 * k + j + 64] = 1'b1;
+                                end
+                            end else begin
+                                for (int unsigned k = 0; k < 8; k++) begin
+                                    csel[8 * k + j] = '0;
+                                    csel[8 * k + j + 64] = '0;
+                                end
+                            end
+                        end
                     end else begin
                         dumh = '0;
                         duml = '0;
                         precb = 2'b11;
                         adc_en1 = '0;
                         buf_write_en_1 = '0;
+                        csel = '0;
+                        disc = 2'b11;
                     end
                 end
 
@@ -285,7 +331,6 @@ module eFlash_driver_U (
                     bl_opt = '0;
                     dumh_opt = '0;
                     csl = '0;
-                    disc = '0;
                     rsel = {16{2'b10}};
 
                     if (exec_cnt == 4'd12 || exec_cnt == 4'd11 || exec_cnt == 4'd10) begin
@@ -297,6 +342,8 @@ module eFlash_driver_U (
                         qdac = 2'b11;
                         buf_write_en_1 = '0;
                         buf_write_en_2 = '0;
+                        csel = '0;
+                        disc = 2'b11;
                     end else if (exec_cnt == 4'd9 || exec_cnt == 4'd8 || exec_cnt == 4'd7) begin
                         for (int unsigned i = 0; i < 64; i++) begin
                             case (input_data[i])
@@ -329,6 +376,8 @@ module eFlash_driver_U (
                         qdac = 2'b11;
                         buf_write_en_1 = '0;
                         buf_write_en_2 = '0;
+                        csel = '0;
+                        disc = 2'b11;
                     end else if (exec_cnt == 4'd6) begin
                         dumh = '0;
                         duml = '0;
@@ -338,6 +387,8 @@ module eFlash_driver_U (
                         qdac = 2'b11;
                         buf_write_en_1 = '0;
                         buf_write_en_2 = '0;
+                        csel = 128'hFFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF;
+                        disc = '0;
                     end else if (exec_cnt == 4'd5) begin
                         dumh = '0;
                         duml = '0;
@@ -347,6 +398,8 @@ module eFlash_driver_U (
                         qdac = 2'b11;
                         buf_write_en_1 = 1'b1;
                         buf_write_en_2 = '0;
+                        csel = 128'hFFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF;
+                        disc = '0;
                     end else if (exec_cnt == 4'd4) begin
                         dumh = '0;
                         duml = '0;
@@ -356,6 +409,8 @@ module eFlash_driver_U (
                         qdac = '0;
                         buf_write_en_1 = 1'b1;
                         buf_write_en_2 = '0;
+                        csel = 128'hFFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF;
+                        disc = '0;
                     end else if (exec_cnt == 4'd3) begin
                         dumh = '0;
                         duml = '0;
@@ -365,6 +420,8 @@ module eFlash_driver_U (
                         qdac = '0;
                         buf_write_en_1 = '0;
                         buf_write_en_2 = '0;
+                        csel = 128'hFFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF;
+                        disc = '0;
                     end else if (exec_cnt == 4'd2 || exec_cnt == 4'd1) begin
                         dumh = '0;
                         duml = '0;
@@ -374,6 +431,8 @@ module eFlash_driver_U (
                         qdac = '0;
                         buf_write_en_1 = '0;
                         buf_write_en_2 = 1'b1;
+                        csel = 128'hFFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF;
+                        disc = '0;
                     end else begin
                         dumh = '0;
                         duml = '0;
@@ -383,6 +442,8 @@ module eFlash_driver_U (
                         qdac = 2'b11;
                         buf_write_en_1 = '0;
                         buf_write_en_2 = '0;
+                        csel = '0;
+                        disc = 2'b11;
                     end
                 end
 
@@ -393,7 +454,6 @@ module eFlash_driver_U (
                     adc_en2 = '0;
                     buf_write_en_2 = '0;
                     qdac = 2'b11;
-                    disc = '0;
                     rsel = {16{2'b01}};
 
                     if (exec_cnt == 4'd9 || exec_cnt == 4'd8 || exec_cnt == 4'd7) begin             
@@ -414,6 +474,8 @@ module eFlash_driver_U (
                         precb = '0;
                         adc_en1 = '0;
                         buf_write_en_1 = '0;
+                        csel = '0;
+                        disc = 2'b11;
                     end else if (exec_cnt == 4'd6 || exec_cnt == 4'd5 || exec_cnt == 4'd4) begin
                         dumh = '0;
                         for (int unsigned i = 0; i < 8; i++) begin
@@ -444,24 +506,56 @@ module eFlash_driver_U (
                         precb = 2'b11;
                         adc_en1 = '0;
                         buf_write_en_1 = '0;
+                        csel = '0;
+                        disc = 2'b11;
                     end else if (exec_cnt == 4'd3) begin
                         dumh = '0;
                         duml = '0;
                         precb = 2'b11;
                         adc_en1 = '0;
                         buf_write_en_1 = '0;
+                        disc = '0;
+                        for (int unsigned j = 0; j < 8; j++) begin
+                            if (j == col_b) begin
+                                for (int unsigned k = 0; k < 8; k++) begin
+                                    csel[8 * k + j] = 1'b1;
+                                    csel[8 * k + j + 64] = 1'b1;
+                                end
+                            end else begin
+                                for (int unsigned k = 0; k < 8; k++) begin
+                                    csel[8 * k + j] = '0;
+                                    csel[8 * k + j + 64] = '0;
+                                end
+                            end
+                        end
                     end else if (exec_cnt == 4'd2 || exec_cnt == 4'd1) begin
                         dumh = '0;
                         duml = '0;
                         precb = 2'b11;
                         adc_en1 = 128'hFFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF;
                         buf_write_en_1 = 1'b1;
+                        disc = '0;
+                        for (int unsigned j = 0; j < 8; j++) begin
+                            if (j == col_b) begin
+                                for (int unsigned k = 0; k < 8; k++) begin
+                                    csel[8 * k + j] = 1'b1;
+                                    csel[8 * k + j + 64] = 1'b1;
+                                end
+                            end else begin
+                                for (int unsigned k = 0; k < 8; k++) begin
+                                    csel[8 * k + j] = '0;
+                                    csel[8 * k + j + 64] = '0;
+                                end
+                            end
+                        end
                     end else begin
                         dumh = '0;
                         duml = '0;
                         precb = 2'b11;
                         adc_en1 = '0;
                         buf_write_en_1 = '0;
+                        csel = '0;
+                        disc = 2'b11;
                     end
                 end
 
@@ -520,6 +614,7 @@ module eFlash_driver_U (
             DISC_o <= 2'b11;
             PRECB_o <= 2'b11;
             RSEL_o <= '0;
+            CSEL_o <= '0;
             buf_write_en_1_o <= '0;
             buf_write_en_2_o <= '0;
         end else begin
@@ -534,6 +629,7 @@ module eFlash_driver_U (
             DISC_o <= disc;
             PRECB_o <= precb;
             RSEL_o <= rsel;
+            CSEL_o <= csel;
             buf_write_en_1_o <= buf_write_en_1;
             buf_write_en_2_o <= buf_write_en_2;
         end

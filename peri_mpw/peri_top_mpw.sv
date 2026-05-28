@@ -29,6 +29,7 @@ module peri_top_mpw (
     output logic [1:0]      A_CSL_O,
     output logic [31:0]     A_BL_OPT_O,
     output logic [15:0]     A_RSEL_O,
+    output logic [63:0]     A_CSEL_O,
 
     // PIM B
     output logic [7:0]      B_DUMH_OPT_O,
@@ -44,7 +45,8 @@ module peri_top_mpw (
     output logic [1:0]      B_QDAC_O,
     output logic [1:0]      B_CSL_O,
     output logic [31:0]     B_BL_OPT_O,
-    output logic [15:0]     B_RSEL_O
+    output logic [15:0]     B_RSEL_O,
+    output logic [63:0]     B_CSEL_O
 );
 
     // Peri controller signal 
@@ -164,6 +166,7 @@ module peri_top_mpw (
         .DISC_o({B_DISC_O[1], A_DISC_O[1]}),
         .PRECB_o({B_PRECB_O[1], A_PRECB_O[1]}),
         .RSEL_o({B_RSEL_O, A_RSEL_O}),
+        .CSEL_o({B_CSEL_O, A_CSEL_O}),
 
         .buf_write_en_1_o(buf_write_en_1),
         .buf_write_en_2_o(buf_write_en_2)

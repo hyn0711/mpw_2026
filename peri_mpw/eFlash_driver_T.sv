@@ -121,7 +121,6 @@ module eFlash_driver_T (
                     bl_opt = '0;
                     csl = '0;
                     qdac = 2'b11;
-                    disc = '0;
                     for (int unsigned i = 0; i < 128; i++) begin
                         if (i == row_addr7_i) begin
                             wl_sel[i] = 1'b1;
@@ -137,15 +136,22 @@ module eFlash_driver_T (
                     end
                     if (exec_cnt == 4'd9 || exec_cnt == 4'd8 || exec_cnt == 4'd7) begin
                         precb = '0;
+                        disc = 2'b11;
+                    end else if (exec_cnt == 4'd6 || exec_cnt == 4'd5 || exec_cnt == 4'd4) begin
+                        precb = 2'b11;
+                        disc = 2'b11;
+                    end else if (exec_cnt == 4'd3 || exec_cnt == 4'd2 || exec_cnt == 4'd1) begin
+                        precb = 2'b11;
+                        disc = '0;
                     end else begin
                         precb = 2'b11;
+                        disc = 2'b11;
                     end
                 end
                 PIM_PARALLEL: begin    
                     mode = {256{2'b01}};
                     bl_opt = '0;
                     csl = '0;
-                    disc = '0;
                     for (int unsigned i = 0; i < 16; i++) begin
                         if (i == row_a) begin
                             for (int unsigned j = 0; j < 8; j++) begin
@@ -166,15 +172,23 @@ module eFlash_driver_T (
                     if (exec_cnt == 4'd12 || exec_cnt == 4'd11 || exec_cnt == 4'd10) begin
                         qdac = 2'b11;
                         precb = '0;
-                    end else if (exec_cnt == 4'd9 || exec_cnt == 4'd8 || exec_cnt == 4'd7 || exec_cnt == 4'd6 || exec_cnt == 4'd5) begin
+                        disc = 2'b11;
+                    end else if (exec_cnt == 4'd9 || exec_cnt == 4'd8 || exec_cnt == 4'd7) begin
                         qdac = 2'b11;
                         precb = 2'b11;
+                        disc = 2'b11;
+                    end else if (exec_cnt == 4'd6 || exec_cnt == 4'd5) begin
+                        qdac = 2'b11;
+                        precb = 2'b11;
+                        disc = '0;
                     end else if (exec_cnt == 4'd4 || exec_cnt == 4'd3 || exec_cnt == 4'd2 || exec_cnt == 4'd1) begin
                         qdac = '0;
                         precb = 2'b11;
+                        disc = '0;
                     end else begin
                         qdac = 2'b11;
                         precb = 2'b11;
+                        disc = 2'b11;
                     end
                 end
 
@@ -183,7 +197,6 @@ module eFlash_driver_T (
                     bl_opt = '0;
                     csl = '0;
                     qdac = 2'b11;
-                    disc = '0;
                     for (int unsigned i = 0; i < 16; i++) begin
                         if (i == row_a) begin
                             for (int unsigned j = 0; j < 8; j++) begin
@@ -203,8 +216,16 @@ module eFlash_driver_T (
                     end
                     if (exec_cnt == 4'd9 || exec_cnt == 4'd8 || exec_cnt == 4'd7) begin
                         precb = '0;
+                        disc = 2'b11;
+                    end else if (exec_cnt == 4'd6 || exec_cnt == 4'd5 || exec_cnt == 4'd4) begin
+                        precb = 2'b11;
+                        disc = 2'b11;
+                    end else if (exec_cnt == 4'd3 || exec_cnt == 4'd2 || exec_cnt == 4'd1) begin   
+                        precb = 2'b11; 
+                        disc = '0;
                     end else begin
                         precb = 2'b11;
+                        disc = 2'b11;
                     end
                 end
                 PIM_LOAD: begin    // Load mode

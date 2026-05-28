@@ -1,14 +1,29 @@
 #include "uart.h"
 
+static uint32_t sw_div(uint32_t a, uint32_t b) {
+    uint32_t q = 0, r = 0;
+    for (int i = 31; i >= 0; i--) {
+        r = (r << 1) | ((a >> i) & 1);
+        if (r >= b) { r -= b; q |= (1u << i); }
+    }
+    return q;
+}
+
 void uart_init(uint32_t clock_frequency, uint32_t baud_rate)
 {
-    uint32_t symbol_edge_time = clock_frequency / baud_rate;
-    uint32_t sample_time = symbol_edge_time / 2;
-    // uint32_t symbol_edge_time = 5209; // clock_frequency / baud_rate;    
-    // uint32_t sample_time = 2605; // symbol_edge_time / 2;
+    uint32_t symbol_edge_time = sw_div(clock_frequency, baud_rate);
+    uint32_t sample_time = symbol_edge_time >> 1;  
     UTRAN_SYMBOL_EDGE_TIME = symbol_edge_time;
     UTRAN_SAMPLE_TIME = sample_time;
 }
+
+// void uart_init(uint32_t clock_frequency, uint32_t baud_rate)
+// {
+//     uint32_t symbol_edge_time = clock_frequency / baud_rate;
+//     uint32_t sample_time = symbol_edge_time / 2;
+//     UTRAN_SYMBOL_EDGE_TIME = symbol_edge_time;
+//     UTRAN_SAMPLE_TIME = sample_time;
+// }
 
 void uwrite_int8(int8_t c)
 {

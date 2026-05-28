@@ -34,3 +34,9 @@ backup_2025_mpw/
 /riscv_mpw/.gitignore
 /riscv_mpw/.gitmodules
 /riscv_mpw/README.md
+
+# Vivado
+vivado*
+.Xil
+
+/riscv_mpw_test/*

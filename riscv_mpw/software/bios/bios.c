@@ -14,6 +14,16 @@ int main(void) {
     // *((volatile uint32_t*)0x8000000C) = 868;  
     // *((volatile uint32_t*)0x80000010) = 434;
 
+    // // Uart debug
+    // volatile uint32_t clk = 100000000;
+    // volatile uint32_t baud = 115200;
+    // uint32_t temp = clk / baud; 
+    // int8_t temp_buffer[16]; 
+    // uint32_to_ascii_hex(temp, temp_buffer, 16); 
+    // uwrite_int8s("HW Div Test: ");
+    // uwrite_int8s(temp_buffer);
+    // uwrite_int8s("\n\r");
+
     // initialize buffer first (for debugging)
     (*((volatile uint32_t*)0x20000000)) = 0x12345678;
     (*((volatile uint32_t*)0x20000004)) = 0x9abcdef0;
@@ -95,7 +105,7 @@ int main(void) {
             uint32_t pulse_width = ascii_dec_to_uint32(str_pulse_width);
             uint8_t pulse_count = (uint8_t)ascii_dec_to_uint32(str_pulse_count);
             uint8_t row = (uint8_t)ascii_dec_to_uint32(str_row);
-            uint16_t col = (uint16_t)ascii_dec_to_uint32(str_col);
+            uint8_t col = (uint8_t)ascii_dec_to_uint32(str_col);
             pim_program(pulse_width, pulse_count, row, col);
 
             /* print parameter */
@@ -110,7 +120,7 @@ int main(void) {
             int8_t *str_col = read_token(buf_col, BUFFER_LEN, " \x0d");
             // uint32_t buffer_addr = ascii_hex_to_uint32(str_buffer_addr);
             uint8_t row = (uint8_t)ascii_dec_to_uint32(str_row);
-            uint16_t col = (uint16_t)ascii_dec_to_uint32(str_col);
+            uint8_t col = (uint8_t)ascii_dec_to_uint32(str_col);
             pim_read(row, col);    
 
             /* print parameter */
@@ -125,7 +135,7 @@ int main(void) {
             int8_t *str_col = read_token(buf_col, BUFFER_LEN, " \x0d");
             uint32_t buffer_addr = ascii_hex_to_uint32(str_buffer_addr);
             uint8_t row = (uint8_t)ascii_dec_to_uint32(str_row);
-            uint16_t col = (uint16_t)ascii_dec_to_uint32(str_col);
+            uint8_t col = (uint8_t)ascii_dec_to_uint32(str_col);
             pim_parallel(buffer_addr, row, col);    
 
             /* print parameter */
@@ -140,7 +150,7 @@ int main(void) {
             int8_t *str_col = read_token(buf_col, BUFFER_LEN, " \x0d");
             uint32_t buffer_addr = ascii_hex_to_uint32(str_buffer_addr);
             uint8_t row = (uint8_t)ascii_dec_to_uint32(str_row);
-            uint16_t col = (uint16_t)ascii_dec_to_uint32(str_col);
+            uint8_t col = (uint8_t)ascii_dec_to_uint32(str_col);
             pim_rbr(buffer_addr, row, col);
 
             /* print parameter */

@@ -48,6 +48,8 @@ module core_top_v2 #(
     logic                       instr_read;
     logic                       instr_write;
 
+
+
     // RV DMEM I/F
     logic                       req_data;
     logic                       gnt_data;
@@ -58,53 +60,29 @@ module core_top_v2 #(
     logic                       data_read;
     logic                       data_write;
 
-    // // SRAM IMEM I/F
-    // logic [XLEN-1:0]            imem_addr;
-    // logic [XLEN-1:0]            imem_rd_data;
-    // logic [XLEN-1:0]            imem_wr_data;
-    // logic [3:0]                 imem_size;
-    // logic                       imem_read;
-    // logic                       imem_write;
+    // SRAM IMEM I/F
+    logic [XLEN-1:0]            imem_addr;
+    logic [XLEN-1:0]            imem_rd_data;
+    logic [XLEN-1:0]            imem_wr_data;
+    logic [3:0]                 imem_size;
+    logic                       imem_read;
+    logic                       imem_write;
 
-    // // SRAM DMEM I/F
-    // logic [XLEN-1:0]            dmem_addr;
-    // logic [XLEN-1:0]            dmem_rd_data;
-    // logic [XLEN-1:0]            dmem_wr_data;
-    // logic [3:0]                 dmem_size;  
-    // logic                       dmem_read;
-    // logic                       dmem_write;
-    
-    // FPGA Debug
-    // IMEM Debug
-    (* mark_debug = "true" *) logic [31:0] imem_addr;
-    (* mark_debug = "true" *) logic        imem_write;
-    (* mark_debug = "true" *) logic        imem_read;
-    (* mark_debug = "true" *) logic [3:0]  imem_size;
-    (* mark_debug = "true" *) logic [31:0] imem_wr_data;
-    (* mark_debug = "true" *) logic [31:0] imem_rd_data;
-
-    // DMEM Debug
-    (* mark_debug = "true" *) logic [31:0] dmem_addr;
-    (* mark_debug = "true" *) logic        dmem_write;
-    (* mark_debug = "true" *) logic        dmem_read;
-    (* mark_debug = "true" *) logic [3:0]  dmem_size;
-    (* mark_debug = "true" *) logic [31:0] dmem_wr_data;
-    (* mark_debug = "true" *) logic [31:0] dmem_rd_data;
+    // SRAM DMEM I/F
+    logic [XLEN-1:0]            dmem_addr;
+    logic [XLEN-1:0]            dmem_rd_data;
+    logic [XLEN-1:0]            dmem_wr_data;
+    logic [3:0]                 dmem_size;  
+    logic                       dmem_read;
+    logic                       dmem_write;
  
-    // // UART
-    // logic [XLEN-1:0]            uart_addr;
-    // logic [XLEN-1:0]            uart_rd_data;
-    // logic [XLEN-1:0]            uart_wr_data;
-    // logic [3:0]                 uart_size;  
-    // logic                       uart_read;
-    // logic                       uart_write;
-
-    (* mark_debug = "true" *) logic [XLEN-1:0] uart_addr;
-    (* mark_debug = "true" *) logic [XLEN-1:0] uart_rd_data;
-    (* mark_debug = "true" *) logic [XLEN-1:0] uart_wr_data;
-    (* mark_debug = "true" *) logic [3:0]      uart_size;
-    (* mark_debug = "true" *) logic            uart_write;
-    (* mark_debug = "true" *) logic            uart_read;
+    // UART
+    logic [XLEN-1:0]            uart_addr;
+    logic [XLEN-1:0]            uart_rd_data;
+    logic [XLEN-1:0]            uart_wr_data;
+    logic [3:0]                 uart_size;  
+    logic                       uart_read;
+    logic                       uart_write;
 
     // PIM BUFFER I/F
     logic [XLEN-1:0]            pim_addr;
@@ -586,11 +564,11 @@ module core_top_v2 #(
 	// UART INPUT/OUTPUT
 	always_ff @(posedge clk_i or negedge rv_rst_ni) begin
 		if (rv_rst_ni == '0) begin
-			serial_tx_o <= '0;
-			serial_rx_orig <= '0;
+			serial_tx_o <= 1'b1;
+			serial_rx_orig <= 1'b1;
 		end else begin
-			    serial_tx_o <= serial_tx_orig;
-			    serial_rx_orig <= serial_rx_i;
+			serial_tx_o <= serial_tx_orig;
+			serial_rx_orig <= serial_rx_i;
 		end
 	end
 
