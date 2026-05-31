@@ -232,13 +232,13 @@ module peri_controller_v2 #(
         end else begin
             if (mode_received && data_i[2:0] == PIM_LOAD) begin
                 load_counter <= 4'd8;
-            end else if (pim_mode == PIM_LOAD && load_counter != '0) begin
+            end else if (curr_state == PIM_EXEC && pim_mode == PIM_LOAD && load_counter != '0) begin
                 load_counter <= load_counter - 1;
             end
 
             if (mode_received && data_i[2:0] == PIM_DEBUG) begin
                 debug_counter <= data_i[3] ? 5'd8 : 5'd16;
-            end else if (pim_mode == PIM_DEBUG && debug_counter != '0) begin
+            end else if (curr_state == PIM_EXEC && pim_mode == PIM_DEBUG && debug_counter != '0) begin
                 debug_counter <= debug_counter - 1;
             end
         end
