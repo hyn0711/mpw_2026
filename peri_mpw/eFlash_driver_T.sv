@@ -259,7 +259,7 @@ module eFlash_driver_T (
         if (!rst_ni) begin
             MODE_o <= '0;
             WL_SEL_o <= '0;
-            VPASS_EN_o <= '0;
+            VPASS_EN_o <= 256'hFFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF;
             BL_OPT_o <= '0;
             CSL_o <= '0;
             QDAC_o <= 2'b11;
