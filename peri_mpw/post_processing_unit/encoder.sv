@@ -35,7 +35,7 @@ module encoder (
     // Encoder output
     always_comb begin
         if (pim_mode_i == PIM_PARALLEL) begin
-            enc_o = 8 * parallel_enc_out_1 + parallel_enc_out_2;
+            enc_o = {parallel_enc_out_1[2:0], 3'b000} + {3'b0, parallel_enc_out_2};
         end else if (pim_mode_i == PIM_RBR) begin
             enc_o = rbr_enc_out;
         end else begin

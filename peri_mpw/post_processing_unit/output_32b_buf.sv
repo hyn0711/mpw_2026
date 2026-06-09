@@ -27,7 +27,7 @@ module output_32b_buf (
         end else begin
             if (w_en_i) begin
                 for (int i = 0; i < 8; i++) begin
-                    data_buf[i] <= data_buf[i] + cycle_shift_data_i[i];
+                    data_buf[i] <= data_buf[i] + {{12{1'b0}}, cycle_shift_data_i[i]};
                 end
             end else if (r_en_i && buf32_cnt_i == 4'd7) begin
                 for (int i = 0; i < 8; i++) begin
